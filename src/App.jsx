@@ -1,6 +1,5 @@
 import './App.css'
-import Button from 'react-bootstrap/Button';
-import WebCamView from './components/webCamView'
+import WebCamView from './components/webcamView'
 
 function App() {
 
