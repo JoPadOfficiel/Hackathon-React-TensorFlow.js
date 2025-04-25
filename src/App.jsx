@@ -1,7 +1,10 @@
 import React, { useRef, useState } from "react";
 import Webcam from "react-webcam";
+import "./utils/localstorageSave"
 import "./App.css";
+import { log } from "@tensorflow/tfjs";
 
+const savesnapchatData = require("./utils/localstorageSave")
 const videoConstraints = {
   width: 1280,
   height: 720,
@@ -12,14 +15,18 @@ function App() {
   const webcamRef = useRef(null);
   const [hasError, setHasError] = useState(false);
   const [screenshot, setScreenshot] = useState(null);
-
+  const localstorage = () => {
+    savesnapchatData();
+    console.log(localstorage);
+    
+  }
   const capture = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
       setScreenshot(imageSrc);
     }
   };
-
+ 
   return (
     <div className="App">
       {!hasError ? (
