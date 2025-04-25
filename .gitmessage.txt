@@ -1,0 +1,8 @@
+# Type (feat, fix, refactor, chore, test, docs, style, perf, ci):
+# Sujet clair en une ligne à l’infinitif
+#
+# Corps du message (optionnel) :
+# - Qu’as-tu changé ?
+# - Pourquoi ?
+#
+# (Pas de point final à la ligne de titre)
