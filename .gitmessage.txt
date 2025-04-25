@@ -6,3 +6,15 @@
 # - Pourquoi ?
 #
 # (Pas de point final à la ligne de titre)
+
+
+# EXEMPLE:
+feat: ajout d'une nouvelle fonctionnalité
+fix: correction d'un bug
+refactor: refactorisation du code
+chore: changement de configuration
+test: ajout de tests
+docs: documentation
+style: style du code
+perf: performance
+ci: changement de configuration
