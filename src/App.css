@@ -275,9 +275,6 @@ body {
     color: #333;
 }
 
-
-/* Styles pour le titre et logo de la galerie */
-
 .gallery-title {
     display: flex;
     align-items: center;
@@ -289,9 +286,6 @@ body {
     height: 1.5em;
     width: auto;
 }
-
-
-/* Style pour le titre principal */
 
 .main-title {
     color: #212529;
