@@ -5,6 +5,7 @@ import { loadDetectionModel, detectAndDraw } from "./utils/objectDetection";
 import "./App.css";
 import "@tensorflow/tfjs";
 import { FaCamera, FaTrash, FaDownload } from 'react-icons/fa6';
+import DetectionList from './components/DetectionList';
 
 const videoConstraints = {
   width: 1280,
@@ -81,52 +82,60 @@ function App() {
   return (
     <div className="App">
       {!hasError ? (
-        <div className="app-container">
-          <div className="video-container">
-            <Webcam
-              ref={webcamRef}
-              audio={false}
-              screenshotFormat="image/jpeg"
-              videoConstraints={videoConstraints}
-              onUserMediaError={() => setHasError(true)}
-              className="webcam-video"
-            />
-            <canvas
-              ref={canvasRef}
-              className="detection-canvas"
-            />
-            <button className="capture-button" onClick={capture}>
-              📸 Capturer
-            </button>
-          </div>
+        <>
+          <h1 className="main-title">TensorVision: Détection d'Objets</h1>
+          <div className="app-container">
+            <div className="video-container">
+              <Webcam
+                ref={webcamRef}
+                audio={false}
+                screenshotFormat="image/jpeg"
+                videoConstraints={videoConstraints}
+                onUserMediaError={() => setHasError(true)}
+                className="webcam-video"
+              />
+              <canvas
+                ref={canvasRef}
+                className="detection-canvas"
+              />
+              <button className="capture-button" onClick={capture}>
+                📸 Capturer
+              </button>
+            </div>
 
-          <div className="gallery-container">
-            <h3>Captures sauvegardées ({savedSnapshots.length})</h3>
-            {savedSnapshots.length === 0 ? (
-              <p className="empty-gallery">Aucune capture.</p>
-            ) : (
-              <div className="snapshots-grid">
-                {savedSnapshots.map((snap) => (
-                  <div key={snap.id} className="snapshot-item">
-                    <img src={snap.image} alt={`Capture du ${snap.date}`} />
-                    <div className="snapshot-info">
-                        <p>{snap.date}</p>
-                        <p>{snap.detections ? `${snap.detections.length} objets` : '0 objet'}</p>
+            <DetectionList detections={predictions} />
+            
+            <div className="gallery-container">
+              <h3 className="gallery-title">
+                <img src="/tensorvision-logo.svg" alt="Logo" className="gallery-title-logo" />
+                Captures sauvegardées ({savedSnapshots.length})
+              </h3>
+              {savedSnapshots.length === 0 ? (
+                <p className="empty-gallery">Aucune capture.</p>
+              ) : (
+                <div className="snapshots-grid">
+                  {savedSnapshots.map((snap) => (
+                    <div key={snap.id} className="snapshot-item">
+                      <img src={snap.image} alt={`Capture du ${snap.date}`} />
+                      <div className="snapshot-info">
+                          <p>{snap.date}</p>
+                          <p>{snap.detections ? `${snap.detections.length} objets` : '0 objet'}</p>
+                      </div>
+                      <div className="snapshot-actions">
+                        <button onClick={() => handleDownload(snap.image, snap.date)} title="Télécharger">
+                          <FaDownload />
+                        </button>
+                        <button onClick={() => handleDelete(snap.id)} title="Supprimer">
+                          <FaTrash />
+                        </button>
+                      </div>
                     </div>
-                    <div className="snapshot-actions">
-                      <button onClick={() => handleDownload(snap.image, snap.date)} title="Télécharger">
-                        <FaDownload />
-                      </button>
-                      <button onClick={() => handleDelete(snap.id)} title="Supprimer">
-                        <FaTrash />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </>
       ) : (
         <div className="error-message">
           <p>⚠️ Accès à la caméra refusé ou erreur de chargement du modèle.</p>
