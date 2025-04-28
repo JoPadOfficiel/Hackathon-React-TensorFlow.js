@@ -102,9 +102,12 @@ function App() {
           </div>
 
           <DetectionList detections={predictions} />
-            
+          
           <div className="gallery-container">
-            <h3>Captures sauvegardées ({savedSnapshots.length})</h3>
+            <h3 className="gallery-title">
+              <img src="/tensorvision-logo.svg" alt="Logo" className="gallery-title-logo" />
+              Captures sauvegardées ({savedSnapshots.length})
+            </h3>
             {savedSnapshots.length === 0 ? (
               <p className="empty-gallery">Aucune capture.</p>
             ) : (
