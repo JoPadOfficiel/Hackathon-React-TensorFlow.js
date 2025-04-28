@@ -182,6 +182,7 @@ body {
 
 .App {
     text-align: center;
+    padding-top: 20px;
 }
 
 .app-container {
@@ -281,13 +282,19 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    /* Espace entre logo et texte */
     margin-bottom: 15px;
-    /* Espace sous le titre */
 }
 
 .gallery-title-logo {
     height: 1.5em;
-    /* Hauteur relative à la taille de police du h3 */
     width: auto;
+}
+
+
+/* Style pour le titre principal */
+
+.main-title {
+    color: #212529;
+    margin-bottom: 25px;
+    font-weight: 700;
 }
