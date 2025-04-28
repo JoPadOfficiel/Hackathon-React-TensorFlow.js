@@ -17,7 +17,7 @@ export const detectObjects = async(image) => {
     return predictions;
 };
 
-export const detectAndDraw = async(model, video, canvas) => {
+export const detectAndDraw = async(model, video, canvas, flash) => {
     if (!model || !video || !canvas || video.readyState !== 4) {
         return;
     }
@@ -31,18 +31,17 @@ export const detectAndDraw = async(model, video, canvas) => {
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const strokeColor = flash ? "#FF0000" : "#00FF00";
+    const textColor = flash ? "#FF0000" : "#00FF00";
+
     predictions.forEach((prediction) => {
         const [x, y, width, height] = prediction.bbox;
 
-        ctx.strokeStyle = "#00FF00";
+        ctx.strokeStyle = strokeColor;
         ctx.lineWidth = 2;
         ctx.strokeRect(x, y, width, height);
 
-        ctx.fillStyle = "#00FF00";
-        const textWidth = ctx.measureText(prediction.class).width;
-        ctx.fillRect(x, y > 10 ? y - 20 : y + 5, textWidth + 4, 20);
-
-        ctx.fillStyle = "#000000";
+        ctx.fillStyle = textColor;
         ctx.font = "16px Arial";
         ctx.fillText(prediction.class, x + 2, y > 10 ? y - 5 : y + 18);
     });

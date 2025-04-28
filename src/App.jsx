@@ -5,6 +5,10 @@ import { loadDetectionModel, detectAndDraw } from "./utils/objectDetection";
 import "./App.css";
 import "@tensorflow/tfjs";
 
+
+
+
+
 const videoConstraints = {
   width: 1280,
   height: 720,
@@ -18,6 +22,8 @@ function App() {
   const [screenshot, setScreenshot] = useState(null);
   const [savedSnapshots, setSavedSnapshots] = useState([]);
   const [model, setModel] = useState(null);
+  const [flash, setFlash] = useState(true);
+  const [predictions, setPredictions] = useState([]);
 
   useEffect(() => {
     const initModel = async () => {
@@ -33,26 +39,67 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (model && webcamRef.current && canvasRef.current) {
+    if (model && webcamRef.current) {
       const runDetection = async () => {
-        const video = webcamRef.current.video;
-        const canvas = canvasRef.current;
-        
-        if (video.readyState === 4) {
-          await detectAndDraw(model, video, canvas);
+        const video = webcamRef.current.video;     
+      if(video.readyState === 4) {
+          const preds = await model.detect(video);
+          setPredictions(preds);
         }
       };
 
       const interval = setInterval(() => {
         runDetection();
-      }, 200);
+      }, 500);
 
       return () => clearInterval(interval);
     }
   }, [model]);
 
+
   useEffect(() => {
-    setSavedSnapshots(getSnapshots());
+    const flashInterval = setInterval(() => {
+      setFlash(prev => !prev);
+    }, 300);
+  
+    return () => clearInterval(flashInterval);
+  }, []);
+  
+
+
+
+  useEffect(() => {
+    if (canvasRef.current && predictions.length > 0) {
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext("2d");
+      const video = webcamRef.current.video;
+
+      if (video.readyState === 4) {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        predictions.forEach((prediction) => {
+          const [x, y, width, height] = prediction.bbox;
+          const strokeColor = flash ? "#FF0000" : "#00FF00";
+          const textColor = flash ? "#FF0000" : "#00FF00";
+
+
+
+          ctx.strokeStyle = strokeColor;
+          ctx.lineWidth = 2;
+          ctx.strokeRect(x, y, width, height);
+
+          ctx.fillStyle = textColor
+          ctx.font = "16px Arial";
+          ctx.fillText(prediction.class, x + 2, y > 10 ? y - 5 : y + 18);
+        });
+      }
+    }
+  }, [flash, predictions]);
+  useEffect(() => {   
+  setSavedSnapshots(getSnapshots());
   }, []);
 
   const capture = () => {
