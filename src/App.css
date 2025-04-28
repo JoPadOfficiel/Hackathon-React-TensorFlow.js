@@ -1,8 +1,22 @@
+body {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
 .video-container {
   position: relative;
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+  width: 80vw;
+  max-width: 1000px;
+  height: 80vh;
+  overflow: visible;
+  background-color: #000;
+  border-radius: 10px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  margin: 0 auto;
 }
 
 .webcam-video {
@@ -12,6 +26,7 @@
   position: absolute;
   top: 0;
   left: 0;
+  border-radius: 10px;
 }
 
 .detection-canvas {
@@ -22,6 +37,7 @@
   height: 100%;
   pointer-events: none;
   z-index: 10;
+  border-radius: 10px;
 }
 
 .capture-button {
@@ -35,15 +51,17 @@
   border-radius: 12px;
   font-size: 16px;
   cursor: pointer;
+  z-index: 20;
 }
 
 .screenshot-preview {
   position: absolute;
-  bottom: 100px;
-  left: 20px;
+  bottom: 20px;
+  right: 20px;
   background: rgba(255, 255, 255, 0.9);
   padding: 10px;
   border-radius: 10px;
+  z-index: 20;
 }
 
 .screenshot-preview img {
@@ -64,14 +82,29 @@
 }
 
 .saved-snapshots {
-  margin-top: 20px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 30px;
   border-top: 1px solid #ccc;
-  padding-top: 15px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 30;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.saved-snapshots h3 {
+  margin-top: 0;
+  color: #333;
 }
 
 .snapshots-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 15px;
   margin-top: 10px;
 }
