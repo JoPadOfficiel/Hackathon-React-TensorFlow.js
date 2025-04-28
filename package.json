@@ -5,7 +5,9 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
+        "build": "vite build && cp _redirects dist/",
+        "deploy": "npm run build && netlify deploy",
+        "start": "vite",
         "lint": "eslint .",
         "preview": "vite preview",
         "lint:fix": "eslint --fix .",
