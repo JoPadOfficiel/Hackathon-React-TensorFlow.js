@@ -5,6 +5,7 @@ import { loadDetectionModel, detectAndDraw } from "./utils/objectDetection";
 import "./App.css";
 import "@tensorflow/tfjs";
 import { FaCamera, FaTrash, FaDownload } from 'react-icons/fa6';
+import DetectionList from './components/DetectionList';
 
 const videoConstraints = {
   width: 1280,
@@ -100,6 +101,8 @@ function App() {
             </button>
           </div>
 
+          <DetectionList detections={predictions} />
+            
           <div className="gallery-container">
             <h3>Captures sauvegardées ({savedSnapshots.length})</h3>
             {savedSnapshots.length === 0 ? (

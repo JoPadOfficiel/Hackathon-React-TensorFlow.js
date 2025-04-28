@@ -192,9 +192,63 @@ body {
     gap: 30px;
 }
 
-.gallery-container {
+.gallery-container,
+.detection-list-container {
     width: 80vw;
     max-width: 1000px;
+}
+
+.detection-list-container {
+    background-color: #e9ecef;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.detection-list-container h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #343a40;
+    font-size: 1.1em;
+}
+
+.no-detections {
+    color: #6c757d;
+    font-style: italic;
+}
+
+.detection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.detection-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 0;
+    border-bottom: 1px solid #dee2e6;
+    font-size: 0.9em;
+}
+
+.detection-item:last-child {
+    border-bottom: none;
+}
+
+.detection-class {
+    text-transform: capitalize;
+    color: #212529;
+}
+
+.detection-score {
+    font-weight: bold;
+    color: #495057;
+}
+
+.gallery-container {
     padding: 20px;
     background-color: #f8f9fa;
     border-radius: 10px;
