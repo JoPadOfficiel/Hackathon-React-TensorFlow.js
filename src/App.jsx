@@ -1,7 +1,9 @@
 import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
 import { saveSnapshot, getSnapshots } from "./utils/localstorageSave";
+import { loadDetectionModel, detectAndDraw } from "./utils/objectDetection";
 import "./App.css";
+import "@tensorflow/tfjs";
 
 const videoConstraints = {
   width: 1280,
@@ -11,9 +13,43 @@ const videoConstraints = {
 
 function App() {
   const webcamRef = useRef(null);
+  const canvasRef = useRef(null);
   const [hasError, setHasError] = useState(false);
   const [screenshot, setScreenshot] = useState(null);
   const [savedSnapshots, setSavedSnapshots] = useState([]);
+  const [model, setModel] = useState(null);
+
+  useEffect(() => {
+    const initModel = async () => {
+      try {
+        const loadedModel = await loadDetectionModel();
+        setModel(loadedModel);
+      } catch (err) {
+        console.error("Error loading model:", err);
+        setHasError(true);
+      }
+    };
+    initModel();
+  }, []);
+
+  useEffect(() => {
+    if (model && webcamRef.current && canvasRef.current) {
+      const runDetection = async () => {
+        const video = webcamRef.current.video;
+        const canvas = canvasRef.current;
+        
+        if (video.readyState === 4) {
+          await detectAndDraw(model, video, canvas);
+        }
+      };
+
+      const interval = setInterval(() => {
+        runDetection();
+      }, 200);
+
+      return () => clearInterval(interval);
+    }
+  }, [model]);
 
   useEffect(() => {
     setSavedSnapshots(getSnapshots());
@@ -40,6 +76,10 @@ function App() {
             videoConstraints={videoConstraints}
             onUserMediaError={() => setHasError(true)}
             className="webcam-video"
+          />
+          <canvas
+            ref={canvasRef}
+            className="detection-canvas"
           />
 
           <button className="capture-button" onClick={capture}>
@@ -69,8 +109,8 @@ function App() {
         </div>
       ) : (
         <div className="error-message">
-          <p>⚠️ Accès à la caméra refusé.</p>
-          <p>Veuillez autoriser l'accès dans votre navigateur.</p>
+          <p>⚠️ Accès à la caméra refusé ou erreur de chargement du modèle.</p>
+          <p>Veuillez autoriser l'accès dans votre navigateur et vérifier la console.</p>
         </div>
       )}
     </div>
