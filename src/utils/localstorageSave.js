@@ -1,20 +1,19 @@
-const capture = () => {
-    if (webcamRef.current) {
-      const imageSrc = webcamRef.current.getScreenshot();
-      setScreenshot(imageSrc);
-  
-      const snapshotData = {
-        id: Date.now(),
-        date: new Date().toLocaleString(),
-        image: imageSrc,
-      };
-  
-  
-      const isPresent = JSON.parse(localStorage.getItem("snapshots")) || [];
-      const updated = [snapshotData, ...isPresent];
-      localStorage.setItem("snapshots", JSON.stringify(updated));
-  
-      setSavedSnapshots(updated);
-    }
+export const saveSnapshot = (imageSrc) => {
+  if (!imageSrc) return;
+
+  const snapshotData = {
+      id: Date.now(),
+      date: new Date().toLocaleString(),
+      image: imageSrc,
   };
-  
+
+  const existingSnapshots = JSON.parse(localStorage.getItem("snapshots")) || [];
+  const updatedSnapshots = [snapshotData, ...existingSnapshots];
+  localStorage.setItem("snapshots", JSON.stringify(updatedSnapshots));
+
+  return updatedSnapshots;
+};
+
+export const getSnapshots = () => {
+  return JSON.parse(localStorage.getItem("snapshots")) || [];
+};

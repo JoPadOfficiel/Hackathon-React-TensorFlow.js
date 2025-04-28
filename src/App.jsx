@@ -1,10 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Webcam from "react-webcam";
-import "./utils/localstorageSave"
+import { saveSnapshot, getSnapshots } from "./utils/localstorageSave";
 import "./App.css";
-import { log } from "@tensorflow/tfjs";
 
-const savesnapchatData = require("./utils/localstorageSave")
 const videoConstraints = {
   width: 1280,
   height: 720,
@@ -15,15 +13,19 @@ function App() {
   const webcamRef = useRef(null);
   const [hasError, setHasError] = useState(false);
   const [screenshot, setScreenshot] = useState(null);
-  const localstorage = () => {
-    savesnapchatData();
-    console.log(localstorage);
-    
-  }
+  const [savedSnapshots, setSavedSnapshots] = useState([]);
+
+  useEffect(() => {
+    setSavedSnapshots(getSnapshots());
+  }, []);
+
   const capture = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
       setScreenshot(imageSrc);
+      
+      const updatedSnapshots = saveSnapshot(imageSrc);
+      setSavedSnapshots(updatedSnapshots);
     }
   };
  
@@ -46,8 +48,22 @@ function App() {
 
           {screenshot && (
             <div className="screenshot-preview">
-              <p>📷 Capture :</p>
+              <p>📷 Capture récente :</p>
               <img src={screenshot} alt="Capture webcam" />
+            </div>
+          )}
+
+          {savedSnapshots.length > 0 && (
+            <div className="saved-snapshots">
+              <h3>Captures sauvegardées ({savedSnapshots.length})</h3>
+              <div className="snapshots-grid">
+                {savedSnapshots.map((snap) => (
+                  <div key={snap.id} className="snapshot-item">
+                    <img src={snap.image} alt={`Capture du ${snap.date}`} />
+                    <p>{snap.date}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
