@@ -11,7 +11,9 @@ const DetectionList = ({ detections }) => {
           {detections.map((detection, index) => (
             <li key={`${detection.class}-${index}`} className="detection-item">
               <span className="detection-class">{detection.class}</span>
-              <span className="detection-score">{Math.round(detection.score * 100)}%</span>
+              <span className="detection-score">
+                {Math.round(detection.score * 100)}%
+              </span>
             </li>
           ))}
         </ul>
@@ -20,4 +22,4 @@ const DetectionList = ({ detections }) => {
   );
 };
 
-export default DetectionList; 
+export default DetectionList;
