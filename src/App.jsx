@@ -1,16 +1,20 @@
-import React, { useRef, useState, useEffect } from "react";
-import Webcam from "react-webcam";
-import { saveSnapshot, getSnapshots, deleteSnapshot } from "./utils/localstorageSave";
-import { loadDetectionModel, detectAndDraw } from "./utils/objectDetection";
-import "./App.css";
-import "@tensorflow/tfjs";
+import React, { useRef, useState, useEffect } from 'react';
+import Webcam from 'react-webcam';
+import {
+  saveSnapshot,
+  getSnapshots,
+  deleteSnapshot,
+} from './utils/localstorageSave';
+import { loadDetectionModel, detectAndDraw } from './utils/objectDetection';
+import './App.css';
+import '@tensorflow/tfjs';
 import { FaCamera, FaTrash, FaDownload } from 'react-icons/fa6';
 import DetectionList from './components/DetectionList';
 
 const videoConstraints = {
   width: 1280,
   height: 720,
-  facingMode: "user",
+  facingMode: 'user',
 };
 
 function App() {
@@ -29,7 +33,7 @@ function App() {
         const loadedModel = await loadDetectionModel();
         setModel(loadedModel);
       } catch (err) {
-        console.error("Error loading model:", err);
+        console.error('Error loading model:', err);
         setHasError(true);
       } finally {
         setIsLoading(false);
@@ -42,8 +46,16 @@ function App() {
     let interval;
     if (model && webcamRef.current && canvasRef.current) {
       interval = setInterval(async () => {
-        if (webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4) {
-          const preds = await detectAndDraw(model, webcamRef.current.video, canvasRef.current);
+        if (
+          webcamRef.current &&
+          webcamRef.current.video &&
+          webcamRef.current.video.readyState === 4
+        ) {
+          const preds = await detectAndDraw(
+            model,
+            webcamRef.current.video,
+            canvasRef.current
+          );
           setPredictions(preds);
         }
       }, 200);
@@ -95,10 +107,7 @@ function App() {
                   onUserMediaError={() => setHasError(true)}
                   className="webcam-video"
                 />
-                <canvas
-                  ref={canvasRef}
-                  className="detection-canvas"
-                />
+                <canvas ref={canvasRef} className="detection-canvas" />
                 <button className="capture-button" onClick={capture}>
                   📸 Capturer
                 </button>
@@ -106,10 +115,14 @@ function App() {
 
               <DetectionList detections={predictions} />
             </div>
-            
+
             <div className="saved-snapshots">
               <h3 className="gallery-title">
-                <img src="/tensorvision-logo.svg" alt="Logo" className="gallery-title-logo" />
+                <img
+                  src="/tensorvision-logo.svg"
+                  alt="Logo"
+                  className="gallery-title-logo"
+                />
                 Captures sauvegardées ({savedSnapshots.length})
               </h3>
               {savedSnapshots.length === 0 ? (
@@ -120,14 +133,24 @@ function App() {
                     <div key={snap.id} className="snapshot-item">
                       <img src={snap.image} alt={`Capture du ${snap.date}`} />
                       <div className="snapshot-info">
-                          <p>{snap.date}</p>
-                          <p>{snap.detections ? `${snap.detections.length} objets` : '0 objet'}</p>
+                        <p>{snap.date}</p>
+                        <p>
+                          {snap.detections
+                            ? `${snap.detections.length} objets`
+                            : '0 objet'}
+                        </p>
                       </div>
                       <div className="snapshot-actions">
-                        <button onClick={() => handleDownload(snap.image, snap.date)} title="Télécharger">
+                        <button
+                          onClick={() => handleDownload(snap.image, snap.date)}
+                          title="Télécharger"
+                        >
                           <FaDownload />
                         </button>
-                        <button onClick={() => handleDelete(snap.id)} title="Supprimer">
+                        <button
+                          onClick={() => handleDelete(snap.id)}
+                          title="Supprimer"
+                        >
                           <FaTrash />
                         </button>
                       </div>
@@ -141,7 +164,10 @@ function App() {
       ) : (
         <div className="error-message">
           <p>⚠️ Accès à la caméra refusé ou erreur de chargement du modèle.</p>
-          <p>Veuillez autoriser l'accès dans votre navigateur et vérifier la console.</p>
+          <p>
+            Veuillez autoriser l'accès dans votre navigateur et vérifier la
+            console.
+          </p>
         </div>
       )}
     </div>
