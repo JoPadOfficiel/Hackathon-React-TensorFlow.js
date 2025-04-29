@@ -85,27 +85,29 @@ function App() {
         <>
           <h1 className="main-title">TensorVision: Détection d'Objets</h1>
           <div className="app-container">
-            <div className="video-container">
-              <Webcam
-                ref={webcamRef}
-                audio={false}
-                screenshotFormat="image/jpeg"
-                videoConstraints={videoConstraints}
-                onUserMediaError={() => setHasError(true)}
-                className="webcam-video"
-              />
-              <canvas
-                ref={canvasRef}
-                className="detection-canvas"
-              />
-              <button className="capture-button" onClick={capture}>
-                📸 Capturer
-              </button>
-            </div>
+            <div className="top-row-container">
+              <div className="video-container">
+                <Webcam
+                  ref={webcamRef}
+                  audio={false}
+                  screenshotFormat="image/jpeg"
+                  videoConstraints={videoConstraints}
+                  onUserMediaError={() => setHasError(true)}
+                  className="webcam-video"
+                />
+                <canvas
+                  ref={canvasRef}
+                  className="detection-canvas"
+                />
+                <button className="capture-button" onClick={capture}>
+                  📸 Capturer
+                </button>
+              </div>
 
-            <DetectionList detections={predictions} />
+              <DetectionList detections={predictions} />
+            </div>
             
-            <div className="gallery-container">
+            <div className="saved-snapshots">
               <h3 className="gallery-title">
                 <img src="/tensorvision-logo.svg" alt="Logo" className="gallery-title-logo" />
                 Captures sauvegardées ({savedSnapshots.length})
