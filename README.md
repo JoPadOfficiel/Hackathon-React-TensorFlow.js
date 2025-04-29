@@ -28,12 +28,14 @@ Ce projet a été développé lors d'un hackathon de 2 jours dans le cadre de no
 ## 🧰 Technologies utilisées
 
 - **Frontend**:
+
   - React 19.0.0
   - Vite 6.3.1
   - Bootstrap 5.3.5
   - React Bootstrap 2.10.9
 
 - **IA & ML**:
+
   - TensorFlow.js 4.22.0
   - COCO-SSD 2.2.3 (modèle pré-entraîné)
 
@@ -50,6 +52,7 @@ Nous avons utilisé la méthodologie Agile avec un tableau Kanban pour organiser
 ![Tableau Kanban](/public/tableau-kanban.png)
 
 Notre workflow de développement a été structuré comme suit :
+
 1. Création d'une branche par fonctionnalité
 2. Développement et tests locaux
 3. Soumission de Pull Requests
@@ -60,6 +63,7 @@ Notre workflow de développement a été structuré comme suit :
 ## 🚀 Installation et démarrage
 
 ### Prérequis
+
 - Node.js (v18.0.0 ou supérieur)
 - npm ou yarn
 
